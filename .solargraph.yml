@@ -1,0 +1,10 @@
+include:
+  - "**/*.rb"
+exclude:
+  - spec/**/*
+require:
+  - activejob
+  - google-cloud-pubsub
+domains: []
+reporters:
+  - rubocop
