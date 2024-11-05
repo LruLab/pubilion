@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "pubilion"
+require "active_job"
+require "timecop"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -11,5 +13,11 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  # Load support files
+  support_regex = File.absolute_path(File.join(File.dirname(__FILE__), "support", "**", "*.rb"))
+  Dir.glob(support_regex).each do |helper|
+    require helper
   end
 end
