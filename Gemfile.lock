@@ -3,6 +3,7 @@ PATH
   specs:
     pubilion (0.1.0)
       activejob (>= 6.1)
+      activesupport (>= 6.1)
       google-cloud-pubsub (~> 2.0)
 
 GEM

@@ -6,6 +6,8 @@ require "pubilion/config"
 
 require "pubilion/extensions"
 
+require "pubilion/worker"
+
 # Pubilion is a Ruby library for interacting with Google Cloud Pub/Sub.
 module Pubilion
 end
