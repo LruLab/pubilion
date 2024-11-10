@@ -22,25 +22,19 @@ bundle install
 > This gem is built to be used with rails.
 > There is currently no usage in Plain Ruby.
 
-### Message Publish
+### Configuration
 
-1. Set project id in initializer or environment variables.
-
-```ruby
-# config/initializers/pubilion.rb
-Pubilion.configure do |config|
-  config.project_id = "your-project-id"
-  config.credentials = "/path/to/your/credentials.json"
-end
-```
-
-or
+1. Generate initializer file.
 
 ```bash
-export PUBSUB_PROJECT_ID="your-project-id"
+rails generate pubilion:install
 ```
 
-2. Set queue adapter to `pub_sub`.
+2. Specify settings in the initializer file. See your `config/initializers/pubilion.rb` for details.
+
+### Message Publish
+
+1. Set queue adapter to `pub_sub`.
 
 ```ruby
 # config/application.rb
@@ -56,7 +50,7 @@ class ApplicationJob < ActiveJob::Base
 end
 ```
 
-3. Create a job class.
+2. Create a job class.
 
 ```ruby
 # app/jobs/hello_job.rb
@@ -70,7 +64,7 @@ class HelloJob < ApplicationJob
 end
 ```
 
-4. Call `perform_later`.
+3. Call `perform_later`.
 
 ```ruby
 HelloJob.perform_later
@@ -82,28 +76,7 @@ HelloJob.perform_later
 > Currently, the worker is support only single subscription.
 > If you want to use multiple subscriptions, you need to create worker per subscription.
 
-1. Set topic and subscription name in initializer or environment variables.
-
-```ruby
-# config/initializers/pubilion.rb
-Pubilion.configure do |config|
-  config.project_id = "your-project-id"
-  config.topic_name = "your-topic-name"
-  config.subscription_name = "your-subscription-name"
-  config.credentials = "/path/to/your/credentials.json"
-end
-```
-
-or
-
-```bash
-export PUBSUB_PROJECT_ID="your-project-id"
-export PUBSUB_TOPIC_NAME="your-topic-name"
-export PUBSUB_SUBSCRIPTION_NAME="your-subscription-name"
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/credentials.json"
-```
-
-2. Run the worker.
+1. Run the worker.
 
 ```bash
 bundle exec rake pubilion:worker:start
