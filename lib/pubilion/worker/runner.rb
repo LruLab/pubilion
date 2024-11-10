@@ -2,6 +2,7 @@
 
 module Pubilion
   class Worker
+    # Runner for Pubilion worker
     class Runner
       WAIT_INTERVAL = 1
       EXIT_SIGNALS = %w[SIGTERM SIGINT].freeze
@@ -13,6 +14,7 @@ module Pubilion
         @subscriber = Pubilion::Worker::Subscriber.new(config, @handler)
       end
 
+      # Start worker and wait for exits.
       def run
         subscriber.run
 
@@ -20,6 +22,8 @@ module Pubilion
       ensure
         subscriber.shutdown
       end
+
+      private
 
       def wait_for_exits(signals = EXIT_SIGNALS)
         exit_requested = false

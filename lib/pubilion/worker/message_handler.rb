@@ -2,9 +2,11 @@
 
 module Pubilion
   class Worker
+    # Message handler for Pubilion worker
     class MessageHandler
       require "active_support/inflector"
 
+      # Handle incoming message
       def on_message(message)
         job = deserialize(message.data)
 
@@ -19,9 +21,12 @@ module Pubilion
         message.nack!
       end
 
+      # Handle error
       def on_error(error)
         # TODO: Implement error handling
       end
+
+      private
 
       def deserialize(payload)
         job_data = JSON.parse(payload)

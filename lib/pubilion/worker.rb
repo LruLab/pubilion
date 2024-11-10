@@ -5,6 +5,7 @@ require "pubilion/worker/subscriber"
 require "pubilion/worker/runner"
 
 module Pubilion
+  # Subscribe worker on Pubilion
   class Worker
     class << self
       def run
