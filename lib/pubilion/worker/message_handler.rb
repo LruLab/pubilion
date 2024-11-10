@@ -8,15 +8,17 @@ module Pubilion
 
       # Handle incoming message
       def on_message(message)
-        job = deserialize(message.data)
+        autoreload do
+          job = deserialize(message.data)
 
-        if job.nil?
-          message.nack!
-          return
+          if job.nil?
+            message.nack!
+            return
+          end
+
+          job.perform_now
+          message.ack!
         end
-
-        job.perform_now
-        message.ack!
       rescue StandardError
         message.nack!
       end
@@ -37,6 +39,14 @@ module Pubilion
         instance.deserialize(job_data)
 
         instance
+      end
+
+      def autoreload(&block)
+        if defined?(Rails)
+          Rails.application.reloader.wrap(&block)
+        else
+          block.call
+        end
       end
     end
   end
