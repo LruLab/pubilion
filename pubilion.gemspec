@@ -18,6 +18,8 @@ Gem::Specification.new do |spec|
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
+  spec.metadata["documantation_uri"] = "https://lrulab.github.io/pubilion"
+  spec.metadata["changelog_uri"] = "https://lrulab.github.io/pubilion/file.CHANGELOG.html"
   spec.metadata["rubygems_mfa_required"] = "true"
 
   gemspec = File.basename(__FILE__)
