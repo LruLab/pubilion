@@ -1,24 +1,113 @@
 # Pubilion
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pubilion`. To experiment with that code, run `bin/console` for an interactive prompt.
+Pubilion is a Ruby gem that provides a simple way to use ActiveJob with Cloud Pub/Sub.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+gem 'pubilion'
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+And execute command:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```bash
+bundle install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+> [!NOTE]
+> This gem is built to be used with rails.
+> There is currently no usage in Plain Ruby.
+
+### Message Publish
+
+1. Set project id in initializer or environment variables.
+
+```ruby
+# config/initializers/pubilion.rb
+Pubilion.configure do |config|
+  config.project_id = "your-project-id"
+  config.credentials = "/path/to/your/credentials.json"
+end
+```
+
+or
+
+```bash
+export PUBSUB_PROJECT_ID="your-project-id"
+```
+
+2. Set queue adapter to `pub_sub`.
+
+```ruby
+# config/application.rb
+config.active_job.queue_adapter = :pub_sub
+```
+
+or
+
+```ruby
+# app/jobs/application_job.rb (or any other job file)
+class ApplicationJob < ActiveJob::Base
+  self.queue_adapter = :pub_sub
+end
+```
+
+3. Create a job class.
+
+```ruby
+# app/jobs/hello_job.rb
+class HelloJob < ApplicationJob
+  # `queue_as` is recognized as a Topic name.
+  queue_as :topic_name
+
+  def perform(*args)
+    puts "Hello, World!"
+  end
+end
+```
+
+4. Call `perform_later`.
+
+```ruby
+HelloJob.perform_later
+```
+
+### Message Subscribe
+
+> [!NOTE]
+> Currently, the worker is support only single subscription.
+> If you want to use multiple subscriptions, you need to create worker per subscription.
+
+1. Set topic and subscription name in initializer or environment variables.
+
+```ruby
+# config/initializers/pubilion.rb
+Pubilion.configure do |config|
+  config.project_id = "your-project-id"
+  config.topic_name = "your-topic-name"
+  config.subscription_name = "your-subscription-name"
+  config.credentials = "/path/to/your/credentials.json"
+end
+```
+
+or
+
+```bash
+export PUBSUB_PROJECT_ID="your-project-id"
+export PUBSUB_TOPIC_NAME="your-topic-name"
+export PUBSUB_SUBSCRIPTION_NAME="your-subscription-name"
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/credentials.json"
+```
+
+2. Run the worker.
+
+```bash
+bundle exec rake pubilion:worker:start
+```
 
 ## Development
 
@@ -28,7 +117,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/pubilion.
+Bug reports and pull requests are welcome on GitHub at https://github.com/LruLab/pubilion.
 
 ## License
 
