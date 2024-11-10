@@ -6,6 +6,7 @@ require "pubilion/config"
 
 require "pubilion/extensions"
 require "pubilion/worker"
+require "pubilion/cli"
 
 require "pubilion/railties" if defined?(Rails::Railtie)
 require "pubilion/generators/install_generator" if defined?(Rails::Generators)

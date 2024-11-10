@@ -1,0 +1,6 @@
+#!/use/bin/env ruby
+
+require "bundler/setup"
+require "pubilion"
+
+Pubilion::CLI.start(ARGV)
