@@ -30,7 +30,7 @@ module Pubilion
 
       # Stop streaming pull subscribe.
       def shutdown
-        @subscriber.stop.wait!(SHUTDOWN_WAIT)
+        @subscriber&.stop&.wait!(SHUTDOWN_WAIT)
       end
 
       # Check if subscriber is alive.
